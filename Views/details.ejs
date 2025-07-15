@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   <link rel="stylesheet" href="/css/style.css">
+   <style>
+   </style>
+</head>
+<body>
+    <%- include('partials/header.ejs') %>
+<main>
+  <div class="container" id="bookdiv">
+  <h2> <%= ride.date %></h2>
+  <div class="details" id="locdest">
+          <h3>From: <%=ride.location%></h3>
+          <p>Pickup: <%= ride.pickupPoint%></p>
+          <p>At: <%= ride.pickupTime%></p>
+        <h3>To: <%=ride.destination %></h3>
+        <p>Drop-off: <%=ride.dropoffPoint %></p>
+  </div>
+  <div class="details" id="noCost"> 
+    <p><%= ride.seats %> passenger</p>
+    <p>Price: ₹<%= ride.price %></p>
+  </div>
+    <button type="button" id="book" onclick="showInput('<%= ride._id %>')">Book Ride</button>
+</div>
+    <div id="namebox" style="display:none;">
+      <h2>Route: <%= ride.location %> - <%= ride.destination %></h2>
+
+        <form action="/book-ride" method="POST">
+    <input type="hidden" name="rideId" value="<%= ride._id %>">
+            <div class="select-group">
+                <h2>Booking for:</h2>
+                <select name="bookingFor" onchange="toggleForm()">
+                    <option value="">Choose one</option>
+                    <option value="myself">Myself</option>
+                    <option value="other">Someone else</option>
+                </select>
+
+                <div id="myselfForm" style="display: none;">
+                    <input type="text" name="passengerName" placeholder="Your name">
+                    <input type="number" name="passengersNo" max="<%=ride.seats%>" placeholder="Number of passengers">
+                    <input type="tel" name="phoneNumber" placeholder="Your contact number">
+                </div>
+
+                <div id="otherForm" style="display: none;">
+                    <input type="text" name="otherPassengerName" placeholder="Passenger name">
+                    <input type="email" name="passengerEmail" placeholder="Passenger email">
+                    <input type="number" name="no" max="<%=ride.seats%>" placeholder="Number of passengers">
+                    <input type="tel" name="phoneNo" placeholder="Passenger contact number">
+                </div>
+            </div>
+            <button type="submit" id="confirm">Confirm Booking</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function showInput() {
+    document.getElementById("namebox").style.display ='block';
+    const bookButton= document.getElementById("book");
+    const bookDiv=document.getElementById("bookdiv")
+    if(bookButton){ bookDiv.style.display='none';  }
+}
+
+function toggleForm() {
+    const bookingFor=document.querySelector('select[name="bookingFor"]').value;
+    document.getElementById("myselfForm").style.display= bookingFor ==="myself"?"block":"none";
+    document.getElementById("otherForm").style.display =bookingFor==="other"?"block": "none";
+}
+</script>
+</body>
+</html>

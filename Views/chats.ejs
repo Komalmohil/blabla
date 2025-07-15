@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link rel="stylesheet" href="/css/profilestyle.css">
+</head>
+<body>
+<div id="one">
+  <h2>Chat</h2>
+   <form method="POST" action="/inbox" id="form">
+    <input type="text" id="msg">
+      <button type="submit">Submit</button>
+   </form>
+   <div  id="allmsgs"></div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket=io();
+
+   const all=document.getElementById("allmsgs");
+   const form= document.getElementById('form')
+   const inp=document.getElementById('msg')
+
+   form.addEventListener("submit",(e)=>{
+    e.preventDefault();
+    if(inp.value){
+        socket.emit("msg",inp.value);
+        inp.value="";
+    }
+})
+    socket.on("msg",(msg)=>{
+      const p=document.createElement("p");
+      p.textContent=msg;
+      all.appendChild(p)
+    });
+
+</script>
+</body>
+</html>

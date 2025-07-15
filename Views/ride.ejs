@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/header.ejs') %>
+    <main>
+     <div class="container" id="create-ride">
+        <h1>Complete the details for your ride</h1>
+    <form method="POST" action="/create-ride" class="ride-form" id="rideForm">
+        <label>Leaving from</label>
+        <input type="text" name="location" required>
+
+        <label>Going to</label>
+        <input type="text" name="destination" required>
+
+        <label>Travel Date</label>
+        <input type="date" id="date"  name="date" required>
+
+        <label >Pickup Point</label>
+        <input type="text" name="pickupPoint" required>
+
+        <label>Pickup Time</label>
+        <input type="time" name="pickupTime" required>
+
+        <label>Drop-off Point</label>
+        <input type="text" name="dropoffPoint" required>
+
+        <label>How many passengers can you take?</label>
+        <input type="number" name="seats" required>
+
+        <label>Price per seat (₹)</label>
+        <input type="number" name="price" required>
+
+        
+       <div class="checkbox-group">
+        <label><input type="checkbox" name="returnTrip" id="returnTrip"> Publish return ride as well</label>
+        <label><input type="checkbox" name="returnTripDone" id="returnTripDone"> Published</label>
+        <label><input type="checkbox" name="Later" id="Later"> Later</label>
+        </div>
+
+  <button type="submit">Publish Ride</button>
+</form>
+</div>
+    </main>
+</body>
+<script>  
+  document.getElementById("rideForm").addEventListener("submit",async function(e){
+    e.preventDefault();
+    const data = {};
+    if (document.getElementById("returnTrip").checked) { data.returnTrip=true;  } 
+    else if (document.getElementById("returnTripDone").checked) {data.returnTripDone = true;} 
+    else if (document.getElementById("later").checked) { data.later=true; }
+
+    try {
+      const response=await fetch("/create-ride", {
+        method:"POST",
+        headers:{"Content-Type": "application/json"},
+        body:JSON.stringify(data)
+      });
+    } catch(err){console.error(err);  }
+  });
+
+const date=document.getElementById("date")
+const min= new Date().toISOString().slice(0,10)
+date.setAttribute('min',min)
+</script>
+</html>

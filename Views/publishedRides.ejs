@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Published Rides</title>
+<link rel="stylesheet" href="/css/searchbar.css">
+</head>
+<body>
+  <%- include('partials/header.ejs') %>
+
+  <main>
+    <div class="container">
+      <h1>Published Rides</h1>
+      <% if(rides.length>0) { %>
+        <ul class="ride-list">
+          <% rides.forEach(ride =>{ %>
+            <li class="ride-item">
+              <a href="/ride/<%=ride.location %>-<%= ride.destination%>" style="text-decoration: none; color: inherit;">
+              <strong><%= ride.location %> => <%= ride.destination %></strong><br>
+              Date: <%=ride.date %><br>
+              Seats: <%=ride.seats%>
+              </a>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else{%>
+        <p>You have not published any rides yet.</p>
+      <% } %>
+    </div>
+  </main>
+</body>
+</html>
